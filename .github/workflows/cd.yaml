@@ -53,9 +53,8 @@ jobs:
       - name: Build and Push
         run: |-
           docker build \
-            -t us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:${{ github.sha }} .
-          docker push us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:${{ github.sha }}
-
+            -t us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm
+          docker push us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm
       # Deploy with VPC-native networking
       - name: Deploy
         run: |-
