@@ -43,7 +43,6 @@ jobs:
             --zone $ZONE \
             --project $PROJECT_ID \
             --internal-ip  # Uses VPC internal networking
-            --legacy-auth
 
       - name: Setup Gcloud and Docker auth
         run: |-
