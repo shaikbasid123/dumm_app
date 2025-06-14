@@ -59,6 +59,6 @@ jobs:
       # Deploy with VPC-native networking
       - name: Deploy
         run: |-
-          kubectl apply -f k8s/  --validate=false
+          kubectl apply -f k8s/
           kubectl rollout status deployment/flask-app
           kubectl get svc -o wide
