@@ -20,7 +20,7 @@ jobs:
       # Authenticate to GCP
       - uses: google-github-actions/auth@v1
         with:
-          credentials_json: "c9ea90bbf7340f57fe291c3072b825aad5ae92fa"
+          credentials_json: c9ea90bbf7340f57fe291c3072b825aad5ae92fa
 
       # Set up gcloud CLI
       - uses: google-github-actions/setup-gcloud@v1
