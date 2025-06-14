@@ -1,0 +1,50 @@
+name: GKE Deployment
+
+on:
+  push:
+    branches: [main]
+
+env:
+  PROJECT_ID: my-app-458011
+  CLUSTER_NAME: app-cluster-01
+  ZONE: us-central1-a # or REGION for regional clusters
+  VPC_NETWORK: main-vpc
+  SUBNET: default
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Authenticate to GCP
+      - uses: google-github-actions/auth@v1
+        with:
+          credentials_json: "c9ea90bbf7340f57fe291c3072b825aad5ae92fa"
+
+      # Set up gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Connect to cluster in your VPC
+      - name: Configure kubectl
+        run: |-
+          gcloud container clusters get-credentials $CLUSTER_NAME \
+            --zone $ZONE \
+            --project $PROJECT_ID \
+            --internal-ip  # Uses VPC internal networking
+
+      # Build and push to GCR (using your VPC network)
+      - name: Build and Push
+        run: |-
+          docker build --network=cloudbuild \
+            -t gcr.io/$PROJECT_ID/flask-app:${{ github.sha }} .
+          docker push gcr.io/$PROJECT_ID/flask-app:${{ github.sha }}
+
+      # Deploy with VPC-native networking
+      - name: Deploy
+        run: |-
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/flask-app
+          kubectl get svc -o wide
