@@ -53,8 +53,8 @@ jobs:
       - name: Build and Push
         run: |-
           docker build \
-            -t us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm
-          docker push us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm
+            -t us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm-app .
+          docker push us-docker.pkg.dev/$PROJECT_ID/my-repo/flask-app:dumm-app
       # Deploy with VPC-native networking
       - name: Deploy
         run: |-
