@@ -51,11 +51,12 @@ HEALTHCHECK --interval=30s --timeout=5s \
 # Ports
 EXPOSE 5000
 
-# Run as non-root user
-USER appuser
-
 # Entrypoint script
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
+
+# Run as non-root user
+USER appuser
+
 ENTRYPOINT ["./entrypoint.sh"]
 
