@@ -44,9 +44,10 @@ jobs:
             --project $PROJECT_ID \
 
       # Auth Docker to Artifact Registry
-      - name: Configure Docker Auth
-        run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
+      - name: Setup Gcloud and Docker auth
+        run: |-
+          gcloud --quiet components update
+          gcloud auth configure-docker us-docker.pkg.dev --quiet
 
       # Build and push to GCR (using your VPC network)
       - name: Build and Push
