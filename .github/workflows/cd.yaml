@@ -6,10 +6,9 @@ on:
 
 env:
   PROJECT_ID: my-app-458011
-  CLUSTER_NAME: app-cluster-01
+  CLUSTER_NAME: app-cluster-02-public
   ZONE: us-central1-a # or REGION for regional clusters
   VPC_NETWORK: main-vpc
-  SUBNET: default
 
 jobs:
   deploy:
@@ -26,6 +25,7 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ env.PROJECT_ID }}
+          install_components: 'kubectl'
 
       - name: Install gke-gcloud-auth-plugin
         run: |
@@ -43,10 +43,10 @@ jobs:
             --zone $ZONE \
             --project $PROJECT_ID \
 
-      - name: Setup Gcloud and Docker auth
-        run: |-
-          gcloud --quiet components update
-          gcloud auth configure-docker us-docker.pkg.dev --quiet
+      # Auth Docker to Artifact Registry
+      - name: Configure Docker Auth
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" | docker login -u _json_key --password-stdin https://us-docker.pkg.dev
 
       # Build and push to GCR (using your VPC network)
       - name: Build and Push
