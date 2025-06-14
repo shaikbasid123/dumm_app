@@ -27,6 +27,11 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
 
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
+
       # Connect to cluster in your VPC
       - name: Configure kubectl
         run: |-
@@ -34,6 +39,7 @@ jobs:
             --zone $ZONE \
             --project $PROJECT_ID \
             --internal-ip  # Uses VPC internal networking
+            --legacy-auth
 
       - name: Setup Gcloud and Docker auth
         run: |-
