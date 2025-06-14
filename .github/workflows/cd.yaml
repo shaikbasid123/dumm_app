@@ -38,7 +38,7 @@ jobs:
       # Build and push to GCR (using your VPC network)
       - name: Build and Push
         run: |-
-          docker build --network=cloudbuild \
+          docker build \
             -t gcr.io/$PROJECT_ID/flask-app:${{ github.sha }} .
           docker push gcr.io/$PROJECT_ID/flask-app:${{ github.sha }}
 
